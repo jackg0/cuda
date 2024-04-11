@@ -249,16 +249,16 @@ main() {
         run_cmd cp NGC-DL-CONTAINER-LICENSE ${BASE_PATH}/${OS_PATH_NAME}/base/
         run_cmd cp -R entrypoint.d nvidia_entrypoint.sh ${BASE_PATH}/${OS_PATH_NAME}/runtime/
 
-        run_cmd docker buildx build --pull ${LOAD_ARG} ${PUSH_ARG} ${PLATFORM_ARG} \
+        run_cmd docker build --no-cache --pull ${PUSH_ARG} ${PLATFORM_ARG} \
             -t "${IMAGE_NAME}:${CUDA_VERSION}-base-${OS}${OS_VERSION}${IMAGE_SUFFIX:+-${IMAGE_SUFFIX}}" \
             "${BASE_PATH}/${OS_PATH_NAME}/base"
 
-        run_cmd docker buildx build --pull ${LOAD_ARG} ${PUSH_ARG} ${PLATFORM_ARG} \
+        run_cmd docker build ${PLATFORM_ARG} \
             -t "${IMAGE_NAME}:${CUDA_VERSION}-runtime-${OS}${OS_VERSION}${IMAGE_SUFFIX:+-${IMAGE_SUFFIX}}" \
             --build-arg "IMAGE_NAME=${IMAGE_NAME}" \
             "${BASE_PATH}/${OS_PATH_NAME}/runtime"
 
-        run_cmd docker buildx build --pull ${LOAD_ARG} ${PUSH_ARG} ${PLATFORM_ARG} \
+        run_cmd docker build ${PLATFORM_ARG} \
             -t "${IMAGE_NAME}:${CUDA_VERSION}-devel-${OS}${OS_VERSION}${IMAGE_SUFFIX:+-${IMAGE_SUFFIX}}" \
             --build-arg "IMAGE_NAME=${IMAGE_NAME}" \
             "${BASE_PATH}/${OS_PATH_NAME}/devel"
